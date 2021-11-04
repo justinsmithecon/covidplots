@@ -7,6 +7,7 @@ library(forecast)
 library(rtweet)
 
 
+
 phucases<- read.csv("All case trends data.csv") %>% rename("phu" = "Public.Health.Unit", "cases" = "Cases.by.reported.date") %>% select(Date, phu,cases)
 phucases$Date <- mdy(phucases$Date)
 onttrain <-filter(phucases,phu == "Ontario", Date <="2021-11-01") %>% select(Date, cases) 
