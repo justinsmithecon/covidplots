@@ -12,6 +12,15 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - uses: r-lib/actions/setup-r@master
+      - name: install packages
+        run: |
+          R -e 'install.packages("tidyverse")'
+          R -e 'install.packages("zoo")'
+          R -e 'install.packages("lubridate")'
+          R -e 'install.packages("forecast")'
+          R -e 'install.packages("xts")'
+          R -e 'install.packages("ggthemes")'
+          R -e 'install.packages("rtweet")'
       - name: Run R script
         run: Rscript covidpredictions.R
       - name: Commit results
