@@ -28,3 +28,15 @@ ggplot() +
  ggtitle("COVID-19 Cases Per Day with ARIMA(14,1,0) Forecast")  
 
 ggsave("data/covidarima.png", plot=last_plot(),width=8,height=4.5,dpi=200)
+
+# Tweet the Graph
+covidplots_token <- rtweet::create_token(
+  app = "covidplots",
+  consumer_key =    Sys.getenv("TWITTER_CONSUMER_API_KEY"),
+  consumer_secret = Sys.getenv("TWITTER_CONSUMER_API_SECRET"),
+  access_token =    Sys.getenv("TWITTER_ACCESS_TOKEN"),
+  access_secret =   Sys.getenv("TWITTER_ACCESS_TOKEN_SECRET"),
+)
+post_tweet("Ontario Cases Forecast from ARIMA(14,1,0) Model",
+           media="data/covidarima.png",
+           token=covidplots_token)
