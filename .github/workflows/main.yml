@@ -1,0 +1,21 @@
+# Periodically Update Predictions
+name: updatepredictions
+on:
+  schedule:
+    - cron: '0 22 * * *'
+  workflow_dispatch:
+jobs:
+  build:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: r-lib/actions/setup-r@main
+      - name: Run R script
+        run: Rscript covidpredictions.R
+      - name: Commit results
+        run: |
+          git config --global user.email "jusmith@wlu.ca"
+          git config --global user.name "Justin Smith"
+          git add '*.png' 'README.md' '*.csv'
+          git commit -m "Update All Plots" || echo "No changes to commit"
+          git push origin || echo "No changes to commit"
