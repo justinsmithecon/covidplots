@@ -6,7 +6,7 @@ library(xts)
 library(forecast)
 library(rtweet)
 
-
+accessed_date<-format(as.POSIXlt(Sys.time(), "EST5EDT" ),"%b %d")
 
 ontcases<- read.csv("Full COVID-19 Summary Data for Ontario.csv") %>% rename("cases" = "Change.in.cases") %>% select(Date, cases)
 ontcases$Date <- mdy(ontcases$Date)
