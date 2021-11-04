@@ -27,4 +27,4 @@ ggplot() +
  ylab("Ontario Covid Cases") + 
  ggtitle("COVID-19 Cases Per Day with ARIMA(14,1,0) Forecast")  
 
-ggsave("data/covidarima.png", plot=last_plot())
+ggsave("data/covidarima.png", plot=last_plot(),width=8,height=4.5,dpi=200)
