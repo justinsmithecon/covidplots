@@ -30,7 +30,7 @@ ggplot() +
 
 ggsave("data/covidarima.png", plot=last_plot(),width=8,height=4.5,dpi=200)
 
-# Tweet the Graph
+# Tweet the Graph 
 covidplots_token <- rtweet::create_token(
   app = "covidplots",
   consumer_key =    Sys.getenv("TWITTER_CONSUMER_API_KEY"),
