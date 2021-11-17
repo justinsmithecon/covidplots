@@ -8,7 +8,7 @@ library(rtweet)
 
 accessed_date<-format(as.POSIXlt(Sys.time(), "EST5EDT" ),"%b %d")
 
-ontcases<- read.csv("Full COVID-19 Summary Data for Ontario.csv") %>% rename("cases" = "Change.in.cases") %>% select(Date, cases)
+ontcases<- read.csv("Full COVID-19 Summary Data for Ontario.csv") %>% rename("cases" = "Change.in.cases") %>% select(Date, cases) %>% filter(row_number() <=n()-1)
 ontcases$Date <- mdy(ontcases$Date)
 onttrain <-filter(ontcases, Date <="2021-11-01") %>% select(Date, cases) 
 ontts <-xts(onttrain$cases, onttrain$Date)
@@ -22,7 +22,7 @@ ggplot() +
  geom_line(data=filter(onttrain, Date>"2021-08-01"),aes(x=Date, y=cases), size=1.2, alpha=0.7) +
  geom_ribbon(data=plotdata, aes(x=Date,ymin=Lo.95, ymax=Hi.95), fill="mediumorchid1", alpha=0.2) +
  geom_line(data=plotdata,aes(x=Date, y=Point.Forecast), color="mediumorchid1", size=1.2) +
- geom_point(data=onteval,aes(x=Date, y=cases), color="black") +
+ geom_line(data=onteval,aes(x=Date, y=cases), color="black", size=1.2, alpha=0.7) +
  scale_x_date(breaks = scales::pretty_breaks(n = 12)) + 
  expand_limits(y=0) +
  theme_fivethirtyeight()+
