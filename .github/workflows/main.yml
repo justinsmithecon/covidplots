@@ -27,7 +27,7 @@ jobs:
           R -e 'install.packages("ggthemes")'
           R -e 'install.packages("rtweet")'
       - name: Run R script
-        run: Rscript covidpredictions.R
+        run: Rscript covidpredictions_auto.R
       - name: Commit results
         run: |
           git config --global user.email "jusmith@wlu.ca"
