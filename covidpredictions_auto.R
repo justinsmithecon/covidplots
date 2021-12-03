@@ -11,10 +11,10 @@ accessed_date<-format(as.POSIXlt(Sys.time(), "EST5EDT" ),"%b %d")
 
 ontcases<- read.csv("Full COVID-19 Summary Data for Ontario.csv") %>% rename("cases" = "Change.in.cases") %>% select(Date, cases)
 ontcases$Date <- mdy(ontcases$Date)
-onttrain <-filter(ontcases, Date <="2021-11-18") %>% select(Date, cases) 
+onttrain <-filter(ontcases, Date <="2021-12-02") %>% select(Date, cases) 
 ontts <-xts(onttrain$cases, order.by=onttrain$Date)
   attr(ontts, 'frequency') <-7
-onteval<-filter(ontcases, Date >"2021-11-18") %>% select(Date, cases) 
+onteval<-filter(ontcases, Date >"2021-12-02") %>% select(Date, cases) 
 
 
 arimamodel<-auto.arima(ontts, stationary = FALSE,  seasonal=TRUE, lambda = "auto")
@@ -48,6 +48,13 @@ covidplots_token <- rtweet::create_token(
   access_token =    Sys.getenv("TWITTER_ACCESS_TOKEN"),
   access_secret =   Sys.getenv("TWITTER_ACCESS_TOKEN_SECRET"),
 )
+
+if(is.nan(rmse)=="TRUE"){
+post_tweet(paste("Ontario cases forecast from ARIMA(4,1,3)x(1,0,1) model. Model is estimated from Ontario data up to Nov 18, then forecased out 2 weeks.  Black is actual data, purple is forecast with 95% forecast interval. Updated with actual values up to ",accessed_date, sep=""),
+             media="data/covidarima.png",
+             token=covidplots_token) 
+} else {
 post_tweet(paste("Ontario cases forecast from ARIMA(4,1,3)x(1,0,1) model. Model is estimated from Ontario data up to Nov 18, then forecased out 2 weeks.  Black is actual data, purple is forecast with 95% forecast interval. Updated with actual values up to ",accessed_date,". Rolling RMSE is ", rmse, sep=""),
-           media="data/covidarima.png",
-           token=covidplots_token)
+             media="data/covidarima.png",
+             token=covidplots_token) 
+}
