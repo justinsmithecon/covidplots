@@ -5,6 +5,7 @@ library(lubridate)
 library(xts)
 library(forecast)
 library(rtweet)
+library(Metrics)
 
 accessed_date<-format(as.POSIXlt(Sys.time(), "EST5EDT" ),"%b %d")
 
@@ -34,6 +35,11 @@ ggplot() +
 
 ggsave("data/covidarima.png", plot=last_plot(),width=8,height=4.5,dpi=200)
 
+
+rmsecalc<-left_join(onteval,plotdata,by="Date") %>% mutate(sqerr = (cases-Point.Forecast)^2)
+rmse<-rmse(rmsecalc$cases, rmsecalc$Point.Forecast) %>% round(digits=2)
+
+
 #Tweet the Graph 
 covidplots_token <- rtweet::create_token(
   app = "covidplots",
@@ -42,6 +48,7 @@ covidplots_token <- rtweet::create_token(
   access_token =    Sys.getenv("TWITTER_ACCESS_TOKEN"),
   access_secret =   Sys.getenv("TWITTER_ACCESS_TOKEN_SECRET"),
 )
-post_tweet(paste("Ontario cases forecast from ARIMA(4,1,3)x(1,0,1) model. The model is estimated from all available COVID data up to Nov 18, and forecased out 2 weeks.  Black is actual data, purple is forecast with 95% forecast interval. Updated with actual values up to",accessed_date),
+post_tweet(paste("Ontario cases forecast from ARIMA(4,1,3)x(1,0,1) model. Model is estimated from Ontario data up to Nov 18, then forecased out 2 weeks.  Black is actual data, purple is forecast with 95% forecast interval. Updated with actual values up to",accessed_date),
+           paste("Rolling RMSE is", rmse),
            media="data/covidarima.png",
            token=covidplots_token)
