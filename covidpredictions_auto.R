@@ -48,7 +48,6 @@ covidplots_token <- rtweet::create_token(
   access_token =    Sys.getenv("TWITTER_ACCESS_TOKEN"),
   access_secret =   Sys.getenv("TWITTER_ACCESS_TOKEN_SECRET"),
 )
-post_tweet(paste("Ontario cases forecast from ARIMA(4,1,3)x(1,0,1) model. Model is estimated from Ontario data up to Nov 18, then forecased out 2 weeks.  Black is actual data, purple is forecast with 95% forecast interval. Updated with actual values up to",accessed_date),
-           paste("Rolling RMSE is", rmse),
+post_tweet(paste("Ontario cases forecast from ARIMA(4,1,3)x(1,0,1) model. Model is estimated from Ontario data up to Nov 18, then forecased out 2 weeks.  Black is actual data, purple is forecast with 95% forecast interval. Updated with actual values up to ",accessed_date,". Rolling RMSE is ", rmse, sep=""),
            media="data/covidarima.png",
            token=covidplots_token)
