@@ -28,7 +28,7 @@ jobs:
           R -e 'install.packages("rtweet")'
           R -e 'install.packages("Metrics")'
       - name: Run R script
-        run: Rscript covidpredictions_auto.R
+        run: Rscript covidpredictions_tbats.R
       - name: Commit results
         run: |
           git config --global user.email "jusmith@wlu.ca"
